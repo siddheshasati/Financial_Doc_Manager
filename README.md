@@ -1,10 +1,110 @@
-Financial Document Management System with Semantic RAGProject OverviewThis is a high-performance FastAPI application designed for organizations to manage, analyze, and retrieve insights from financial documents (Invoices, Reports, Contracts). It leverages Retrieval-Augmented Generation (RAG) and Semantic Analysis to allow users to ask complex financial questions and receive context-aware answers.Key FeaturesMulti-Format Processing: Support for PDF, Excel (.xlsx), Word (.docx), and Text (.txt) files.Advanced Semantic Search: Powered by BAAI/bge-small-en-v1.5 embeddings and Qdrant Vector DB.Role-Based Access Control (RBAC): Granular permissions for Admin, Financial Analyst, Auditor, and Client roles.Secure Authentication: JWT-based authentication with password hashing via Bcrypt.Financial Reranking: Implements a two-stage retrieval pipeline (Top 20 candidates $\rightarrow$ Top 5 relevant results).The Technical Challenges & Solutions1. Challenge: Parsing Complex Financial FormatsProblem: Financial data often resides in unstructured PDFs or structured Excel sheets. Standard text extraction often fails to preserve the relationship between financial figures.Solution: Integrated PyMuPDF (Fitz) for high-accuracy PDF text extraction and Pandas for converting Excel sheets into string-based tabular representations before chunking.2. Challenge: Maintaining Security with RBACProblem: Ensuring that a "Client" cannot access "Auditor" search tools or "Analyst" upload tools while using a shared API structure.Solution: Implemented FastAPI Dependencies that verify both the JWT validity and the user's role stored in the SQLite database before granting access to sensitive endpoints.3. Challenge: Semantic Search Accuracy (Financial Context)Problem: Generic embedding models often struggle with specific financial terminology (e.g., "leverage," "solvency," "liquidity").Solution: Switched to the BGE-small model, which is specialized for retrieval tasks, and implemented Recursive Character Chunking to keep financial paragraphs intact, ensuring semantic meaning is preserved.Installation and SetupPrerequisitesPython 3.10 or higherPip (Python package manager)1. Clone the RepositoryBashgit clone https://github.com/siddheshasati/Financial_Doc_Manager.git
+📊 Financial Document Management System with Semantic RAG
+
+
+🚀 Overview
+A high-performance FastAPI-based system designed to manage, analyze, and extract insights from financial documents such as Invoices, Reports, and Contracts.
+
+This system leverages Retrieval-Augmented Generation (RAG) and semantic search to allow users to ask complex financial queries and receive accurate, context-aware answers.
+
+✨ Key Features
+📄 Multi-Format Support
+Handles PDF, Excel (.xlsx), Word (.docx), and Text (.txt)
+🔍 Advanced Semantic Search
+Uses BAAI/bge-small-en-v1.5 embeddings + Qdrant Vector DB
+🔐 Role-Based Access Control (RBAC)
+Admin
+Financial Analyst
+Auditor
+Client
+🛡️ Secure Authentication
+JWT-based authentication with Bcrypt password hashing
+⚡ Two-Stage Retrieval Pipeline
+Top 20 candidates → Top 5 reranked results
+Improves financial query precision
+🧠 Architecture (RAG Pipeline)
+Document → Text Extraction → Chunking → Embeddings → Qdrant DB → Retrieval → Reranking → Answer Generation
+⚙️ Technical Challenges & Solutions
+1. 📑 Parsing Complex Financial Data
+
+Problem:
+Unstructured PDFs and structured Excel sheets lose contextual relationships during extraction.
+
+Solution:
+
+Used PyMuPDF (Fitz) for accurate PDF parsing
+Used Pandas to convert Excel into structured text
+Applied chunking strategies to preserve semantic meaning
+2. 🔐 Secure Role-Based Access (RBAC)
+
+Problem:
+Prevent unauthorized access across shared APIs.
+
+Solution:
+
+Implemented FastAPI Dependency Injection
+Verified:
+JWT Token
+User Role (stored in SQLite)
+Enforced access control at endpoint level
+3. 📊 Financial Semantic Accuracy
+
+Problem:
+Generic embeddings fail for financial terminology.
+
+Solution:
+
+Switched to BGE-small (optimized for retrieval)
+Used Recursive Character Chunking
+Preserved financial context (liquidity, leverage, solvency)
+🛠️ Tech Stack
+Backend: FastAPI
+Database: SQLite
+Vector DB: Qdrant
+Embeddings: BAAI/bge-small-en-v1.5
+Authentication: JWT + Bcrypt
+Parsing: PyMuPDF, Pandas
+🧑‍💻 Installation & Setup
+Prerequisites
+Python 3.10+
+pip
+1. Clone Repository
+git clone https://github.com/siddheshasati/Financial_Doc_Manager.git
 cd Financial_Doc_Manager
-2. Create a Virtual EnvironmentBashpython -m venv venv
-# Activate on Windows:
+2. Create Virtual Environment
+python -m venv venv
+
+Activate:
+
+Windows:
 venv\Scripts\activate
-3. Install DependenciesBashpip install -r requirements.txt
-4. Run the ApplicationBashuvicorn main:app --reload
-The server will start at http://127.0.0.1:8000.Quick Start GuideOpen Documentation: Navigate to http://127.0.0.1:8000/docs.Seed Roles: The system automatically creates Admin, Analyst, Auditor, and Client roles on the first run.Register: Use /auth/register to create a user (Enter 1 for Admin, 2 for Analyst, etc.).Authorize: Click the "Authorize" button in Swagger and log in with your new user.Upload & Search: Upload a financial PDF/Excel and use /rag/search to query it.Project Requirements Checklist[x] FastAPI API Implementation (Register, Login, Upload, Manage).[x] RBAC (Admin, Analyst, Auditor, Client).[x] JWT Authentication.[x] RAG Pipeline (Text Extraction $\rightarrow$ Chunking $\rightarrow$ Embeddings $\rightarrow$ Qdrant).[x] Specialized Financial Embeddings.[x] Semantic Search and Reranking.How to add this to your GitHubIn VS Code, create a new file named README.md.Copy the text above and paste it into the file.Run these commands in the terminal:Bashgit add README.md
-git commit -m "Added project documentation"
-git push origin main
+3. Install Dependencies
+pip install -r requirements.txt
+4. Run the Application
+uvicorn main:app --reload
+📘 API Usage Guide
+Open Swagger UI:
+👉 http://127.0.0.1:8000/docs
+Steps:
+Register User → /auth/register
+Login & Authorize → Use JWT
+Upload Documents
+Search using RAG → /rag/search
+✅ Project Checklist
+✔ FastAPI Backend
+✔ JWT Authentication
+✔ Role-Based Access Control
+✔ RAG Pipeline Implementation
+✔ Financial Semantic Search
+✔ Reranking Mechanism
+📈 Future Improvements
+📊 Dashboard for financial insights visualization
+☁️ Cloud deployment (AWS / Azure)
+🧠 Fine-tuned financial LLM
+📁 Multi-user document collaboration
+
+
+📬 Contact
+Siddhesh Asati
+GitHub: https://github.com/siddheshasati
+
+⭐ If you found this useful, give it a star!
