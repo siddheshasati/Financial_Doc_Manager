@@ -32,37 +32,34 @@ Document → Text Extraction → Chunking → Embeddings → Qdrant DB → Retri
 
 ⚙️ Technical Challenges & Solutions
 1. 📑 Parsing Complex Financial Data
-
 Problem:
 Unstructured PDFs and structured Excel sheets lose contextual relationships during extraction.
 
 Solution:
-
 Used PyMuPDF (Fitz) for accurate PDF parsing
 Used Pandas to convert Excel into structured text
 Applied chunking strategies to preserve semantic meaning
-2. 🔐 Secure Role-Based Access (RBAC)
 
+2. 🔐 Secure Role-Based Access (RBAC)
 Problem:
 Prevent unauthorized access across shared APIs.
 
 Solution:
-
 Implemented FastAPI Dependency Injection
 Verified:
 JWT Token
 User Role (stored in SQLite)
 Enforced access control at endpoint level
-3. 📊 Financial Semantic Accuracy
 
+3. 📊 Financial Semantic Accuracy
 Problem:
 Generic embeddings fail for financial terminology.
 
 Solution:
-
 Switched to BGE-small (optimized for retrieval)
 Used Recursive Character Chunking
 Preserved financial context (liquidity, leverage, solvency)
+
 🛠️ Tech Stack
 Backend: FastAPI
 Database: SQLite
@@ -70,6 +67,7 @@ Vector DB: Qdrant
 Embeddings: BAAI/bge-small-en-v1.5
 Authentication: JWT + Bcrypt
 Parsing: PyMuPDF, Pandas
+
 🧑‍💻 Installation & Setup
 Prerequisites
 Python 3.10+
@@ -81,7 +79,6 @@ cd Financial_Doc_Manager
 python -m venv venv
 
 Activate:
-
 Windows:
 venv\Scripts\activate
 3. Install Dependencies
@@ -91,11 +88,13 @@ uvicorn main:app --reload
 📘 API Usage Guide
 Open Swagger UI:
 👉 http://127.0.0.1:8000/docs
+
 Steps:
 Register User → /auth/register
 Login & Authorize → Use JWT
 Upload Documents
 Search using RAG → /rag/search
+
 ✅ Project Checklist
 ✔ FastAPI Backend
 ✔ JWT Authentication
