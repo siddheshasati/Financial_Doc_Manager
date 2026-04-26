@@ -7,22 +7,29 @@ A high-performance FastAPI-based system designed to manage, analyze, and extract
 This system leverages Retrieval-Augmented Generation (RAG) and semantic search to allow users to ask complex financial queries and receive accurate, context-aware answers.
 
 ✨ Key Features
+
 📄 Multi-Format Support
 Handles PDF, Excel (.xlsx), Word (.docx), and Text (.txt)
+
 🔍 Advanced Semantic Search
 Uses BAAI/bge-small-en-v1.5 embeddings + Qdrant Vector DB
+
 🔐 Role-Based Access Control (RBAC)
 Admin
 Financial Analyst
 Auditor
 Client
+
 🛡️ Secure Authentication
 JWT-based authentication with Bcrypt password hashing
+
 ⚡ Two-Stage Retrieval Pipeline
 Top 20 candidates → Top 5 reranked results
 Improves financial query precision
+
 🧠 Architecture (RAG Pipeline)
 Document → Text Extraction → Chunking → Embeddings → Qdrant DB → Retrieval → Reranking → Answer Generation
+
 ⚙️ Technical Challenges & Solutions
 1. 📑 Parsing Complex Financial Data
 
