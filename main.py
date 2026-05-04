@@ -26,15 +26,15 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 async def register(
     username: str, 
     password: str,
-    role_id: int,  # User will now see an input box for the Role ID
+    role_id: int,  
     db: Session = Depends(get_db)
 ):
-    # 1. Check if user already exists
+    
     existing_user = db.query(models.User).filter(models.User.username == username).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already registered")
 
-    # 2. Validate that the role exists
+    
     role = db.query(models.Role).filter(models.Role.id == role_id).first()
     if not role:
         raise HTTPException(
@@ -47,7 +47,7 @@ async def register(
     new_user = models.User(
         username=username,
         password_hash=hashed_pwd,
-        role_id=role_id  # Assigns the role selected by the user
+        role_id=role_id  
     )
     
     try:
@@ -65,14 +65,14 @@ async def login(
 ):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
     
-    # IMPORTANT: Ensure user.password_hash matches the attribute name in models.py
+    
     if not user or not auth.verify_password(form_data.password, user.password_hash):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     
     access_token = auth.create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
-# --- DOCUMENT ENDPOINTS ---
+
 
 @app.post("/documents/upload")
 async def upload_document(
@@ -119,15 +119,13 @@ async def upload_document(
     
     return {"message": f"{filename} indexed successfully", "doc_id": new_doc.id}
 
-# --- RAG ENDPOINTS ---
 
 @app.post("/rag/search")
 def search_insights(
     query: str, 
     current_user: models.User = Depends(auth.get_current_user)
 ):
-    # 1. RBAC Processing: Check if user role matches allowed roles
-    # Note: Using a list allows you to easily add more roles like 'Analyst' later
+    
     allowed_roles = ["Admin", "Auditor"]
     
     if not current_user.role or current_user.role.name not in allowed_roles:
@@ -136,12 +134,12 @@ def search_insights(
             detail="Search restricted to Admin or Auditor roles only"
         )
     
-    # 2. Execute Semantic Search
+    
     try:
         results = rag_service.semantic_search(query)
         return {"results": results}
     except Exception as e:
-        # Catch errors if the RAG service/Vector DB is down
+
         raise HTTPException(status_code=500, detail=f"Search service error: {str(e)}")
 
 class RoleSelection(IntEnum):
@@ -154,7 +152,7 @@ def seed_roles():
     db = SessionLocal()
     try:
         for role_choice in RoleSelection:
-            # Check if a role with this ID OR this Name already exists
+            
             role_exists = db.query(models.Role).filter(
                 (models.Role.id == role_choice.value) | 
                 (models.Role.name == role_choice.name)
