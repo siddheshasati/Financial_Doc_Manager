@@ -7,7 +7,6 @@ from qdrant_client.http.models import Distance, VectorParams
 embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 client = QdrantClient(":memory:") # Or your local URL
 
-# Ensure collection exists
 COLLECTION_NAME = "financial_docs"
 if not client.collection_exists(COLLECTION_NAME):
     client.create_collection(
