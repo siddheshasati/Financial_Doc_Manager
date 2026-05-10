@@ -1,4 +1,4 @@
-📊 Financial Document Management System with Semantic RAG
+###📊 Financial Document Management System with Semantic RAG
 
 
 🚀 Overview
